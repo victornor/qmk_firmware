@@ -17,7 +17,7 @@
 
 enum layers {
     _QWERTY = 0,
-    _LOWER,
+    _LOWER = 1,
     _RAISE,
     _ADJUST
 };
@@ -160,7 +160,7 @@ static void render_qmk_logo(void) {
 static void render_status(void) {
     // QMK Logo and version information
     render_qmk_logo();
-    oled_write_P(PSTR("Kyria rev1.0\n\n"), false);
+    oled_write_P(PSTR("#MacSucks\n\n"), false);
 
     // Host Keyboard Layer Status
     oled_write_P(PSTR("Layer: "), false);
@@ -207,12 +207,25 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             tap_code(KC_VOLU);            
         }
     }
-    else if (index == 1) {
-        // Page up/Page down
-        if (clockwise) {
-            tap_code(KC_LEFT);
-        } else {
-            tap_code(KC_RIGHT);
+    else if (index == 1) {        
+        if(IS_LAYER_ON(0)){
+            // Left/Right
+            if (clockwise) {                
+                tap_code(KC_LEFT);
+            }
+            else {
+                tap_code(KC_RIGHT);
+            }
+        }
+        
+        if(IS_LAYER_ON(1)){
+            // Page up/Page down
+            if (clockwise) {
+                tap_code(KC_PGUP);
+            }
+            else {
+                tap_code(KC_PGDN);
+            }
         }
     }
 }
